@@ -33,6 +33,13 @@ function set_zsh_as_default_shell {
   chsh -s /bin/zsh
 }
 
+function configure_git {
+  echo 'Configuring git'
+  git config --global pull.rebase true
+  git config --global log.decorate=short
+}
+
+configure_git
 brew_install
 configure_zsh
 set_zsh_as_default_shell
