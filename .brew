@@ -1,0 +1,13 @@
+gdbm
+libyaml
+lua
+openssl
+perl
+python
+readline
+ruby
+sqlite
+vim
+zsh
+tmux
+reattach-to-user-namespace
