@@ -40,9 +40,17 @@ function configure_git {
   git config --global log.decorate=short
 }
 
+function configure_osx {
+  defaults write -g InitialKeyRepeat -int 10
+  defaults write -g KeyRepeat -int 1
+  defaults write com.apple.AppleMultitouchTrackpad Clicking 1
+  defaults write com.apple.dock autohide 1
+}
+
 configure_git
 brew_install
 configure_zsh
 set_zsh_as_default_shell
 setup_tmux
 setup_vim
+configure_osx
