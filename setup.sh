@@ -2,6 +2,7 @@ function brew_install {
   echo 'Installing brew + tools'
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   cat $PWD/.brew | xargs -I {} brew install {}
+  cat $PWD/.brew-cask | xargs -I {} brew cask install {}
 }
 
 function configure_zsh {
