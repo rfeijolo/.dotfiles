@@ -18,8 +18,9 @@ filetype off                  " required
 autocmd BufRead,BufNewFile *.{md} setlocal spell spelllang=en_us
 autocmd BufRead,BufNewFile *.{clj} setlocal autochdir
 set noshowmode
+set showcmd
 set noruler
-set noshowcmd
+set expandtab
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
