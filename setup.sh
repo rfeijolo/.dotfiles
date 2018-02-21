@@ -45,6 +45,7 @@ function configure_osx {
   defaults write -g KeyRepeat -int 1
   defaults write com.apple.AppleMultitouchTrackpad Clicking 1
   defaults write com.apple.dock autohide 1
+  defaults write -g ApplePressAndHoldEnabled -bool false
 }
 
 configure_git
