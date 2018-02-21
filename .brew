@@ -11,3 +11,4 @@ vim
 zsh
 tmux
 reattach-to-user-namespace
+git-crypt
