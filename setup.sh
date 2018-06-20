@@ -1,20 +1,48 @@
-function brew_install {
-  echo 'Installing brew + tools'
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  cat $PWD/.brew | xargs -I {} brew install {}
-  cat $PWD/.brew-cask | xargs -I {} brew cask install {}
+#!/bin/bash
+
+function update_packages {
+  sudo apt update
+  sudo apt upgrade -y
 }
 
-function configure_zsh {
-  echo 'Installing prezto and configuring zsh'
-  git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-  for rcfile in $(find "${ZDOTDIR:-$HOME}/.zprezto/runcoms" -maxdepth 1 -type f ! -name README.md -exec basename {} \;); do
-    ln -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/$rcfile" "${ZDOTDIR:-$HOME}/.$rcfile"
-  done
-  rm "${ZDOTDIR:-$HOME}/.zshrc"
-  ln -s $PWD/.zshrc "${ZDOTDIR:-$HOME}/.zshrc"
-  rm "${ZDOTDIR:-$HOME}/.zpreztorc"
-  ln -s $PWD/.zpreztorc "${ZDOTDIR:-$HOME}/.zpreztorc"
+function install_dev_tools {
+  sudo apt install vim-gnome -y
+  sudo apt install git -y
+  sudo apt install gnome-tweak-tool -y
+  sudo apt install tmux -y
+  sudo apt install curl -y
+  sudo apt install xclip -y
+  sudo apt install golang-go -y
+  sudo apt install openvpn easy-rsa -y
+  sudo apt install python -y
+  sudo apt install libpq-dev -y
+}
+
+function install_fzf {
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --all
+}
+
+function install_spotify {
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0DF731E45CE24F27EEEB1450EFDC8610341D9410 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
+  echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+  sudo apt-get update
+  sudo apt-get install spotify-client -y
+}
+
+function install_enpass {
+  wget -O - https://dl.sinew.in/keys/enpass-linux.key | sudo apt-key add -
+  echo "deb http://repo.sinew.in/ stable main" | sudo tee /etc/apt/sources.list.d/enpass.list
+  sudo apt-get update
+  sudo apt-get install enpass -y
+}
+
+function install_slack {
+  sudo snap install slack --classic
+}
+
+function install_nvm {
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 }
 
 function setup_tmux {
@@ -30,28 +58,9 @@ function setup_vim {
   vim +PluginInstall +qall
 }
 
-function set_zsh_as_default_shell {
-  chsh -s /bin/zsh
-}
-
 function configure_git {
   echo 'Configuring git'
   git config --global pull.rebase true
   git config --global log.decorate=short
 }
 
-function configure_osx {
-  defaults write -g InitialKeyRepeat -int 10
-  defaults write -g KeyRepeat -int 1
-  defaults write com.apple.AppleMultitouchTrackpad Clicking 1
-  defaults write com.apple.dock autohide 1
-  defaults write -g ApplePressAndHoldEnabled -bool false
-}
-
-configure_git
-brew_install
-configure_zsh
-set_zsh_as_default_shell
-setup_tmux
-setup_vim
-configure_osx

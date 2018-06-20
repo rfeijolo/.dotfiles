@@ -11,9 +11,8 @@ set shiftwidth=2
 set tabstop=2
 set list
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
-colorscheme solarized
 set nocompatible              " be iMproved, required
-set cc=80
+set cc=120
 filetype off                  " required
 autocmd BufRead,BufNewFile *.{md} setlocal spell spelllang=en_us
 autocmd BufRead,BufNewFile *.{clj} setlocal autochdir
@@ -26,7 +25,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'benmills/vimux'
 Plugin 'christoomey/vim-tmux-navigator'
@@ -89,3 +87,5 @@ let g:rbpt_colorpairs = [
     \ ]
 
 let g:rbpt_max = 16
+" Configure airline
+let g:airline_theme='solarized'
