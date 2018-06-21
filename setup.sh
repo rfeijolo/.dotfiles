@@ -14,8 +14,10 @@ function install_dev_tools {
   sudo apt install xclip -y
   sudo apt install golang-go -y
   sudo apt install openvpn easy-rsa -y
-  sudo apt install python -y
+  sudo apt install python python-pip -y
   sudo apt install libpq-dev -y
+  sudo apt install apt-transport-https ca-certificates software-properties-common -y
+  pip install awscli --upgrade --user
 }
 
 function install_fzf {
@@ -62,5 +64,12 @@ function configure_git {
   echo 'Configuring git'
   git config --global pull.rebase true
   git config --global log.decorate=short
+}
+
+function install_docker {
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  sudo apt-get update
+  sudo apt-get install docker-ce
 }
 
