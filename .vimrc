@@ -12,7 +12,7 @@ set tabstop=2
 set list
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 set nocompatible              " be iMproved, required
-set cc=120
+set cc=100
 filetype off                  " required
 autocmd BufRead,BufNewFile *.{md} setlocal spell spelllang=en_us
 autocmd BufRead,BufNewFile *.{clj} setlocal autochdir
@@ -37,6 +37,7 @@ Plugin 'tpope/vim-salve'
 Plugin 'guns/vim-sexp'
 Plugin 'tpope/vim-sexp-mappings-for-regular-people'
 Plugin 'tpope/vim-surround'
+Plugin 'dhruvasagar/vim-zoom'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -89,3 +90,13 @@ let g:rbpt_colorpairs = [
 let g:rbpt_max = 16
 " Configure airline
 let g:airline_theme='solarized'
+" Configure fzf
+set rtp+=~/.fzf
+nnoremap <c-p> :FZF<cr>
+
+syntax enable
+set background=light
+colorscheme solarized
+
+set backupdir=~/.vim/backup
+set directory=~/.vim/swap

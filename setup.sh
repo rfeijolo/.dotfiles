@@ -73,3 +73,7 @@ function install_docker {
   sudo apt-get install docker-ce
 }
 
+function install_fd {
+  curl -o /tmp/fd -L https://github.com/sharkdp/fd/releases/download/v7.0.0/fd_7.0.0_amd64.deb
+  sudo dpkg -i /tmp/fd
+}
