@@ -55,7 +55,10 @@ function setup_tmux {
 function setup_vim {
   echo 'Setting up vim'
   mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+  mkdir -p ~/.vim/backup
+  mkdir -p ~/.vim/swap
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  git clone git://github.com/altercation/vim-colors-solarized.git ~/.vim/bundle/vim-colors-solarized
   ln -s $PWD/.vimrc $HOME
   vim +PluginInstall +qall
 }
@@ -70,10 +73,27 @@ function install_docker {
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   sudo apt-get update
-  sudo apt-get install docker-ce
+  sudo apt-get install docker-ce -y
+  sudo gpasswd -a $USER docker
+  newgrp docker
+  sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
 }
 
 function install_fd {
   curl -o /tmp/fd -L https://github.com/sharkdp/fd/releases/download/v7.0.0/fd_7.0.0_amd64.deb
   sudo dpkg -i /tmp/fd
 }
+
+update_packages
+install_dev_tools
+install_slack
+install_spotify
+install_enpass
+install_nvm
+install_fzf
+setup_tmux
+setup_vim
+configure_git
+install_docker
+install_fd
