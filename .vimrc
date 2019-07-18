@@ -2,7 +2,6 @@ execute pathogen#infect()
 syntax on
 let mapleader = ","
 set hlsearch
-set background=dark
 set backspace=indent,eol,start
 set clipboard=unnamed
 set number
@@ -15,7 +14,7 @@ set nocompatible              " be iMproved, required
 set cc=100
 filetype off                  " required
 autocmd BufRead,BufNewFile *.{md} setlocal spell spelllang=en_us
-autocmd BufRead,BufNewFile *.{clj} setlocal autochdir
+"autocmd BufRead,BufNewFile *.{clj} setlocal autochdir
 set noshowmode
 set showcmd
 set noruler
@@ -39,6 +38,10 @@ Plugin 'tpope/vim-sexp-mappings-for-regular-people'
 Plugin 'tpope/vim-surround'
 Plugin 'dhruvasagar/vim-zoom'
 Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'hashivim/vim-terraform'
+Plugin 'altercation/vim-colors-solarized'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -96,8 +99,28 @@ set rtp+=~/.fzf
 nnoremap <c-p> :FZF<cr>
 
 syntax enable
-set background=light
+set background=dark
 colorscheme solarized
 
 set backupdir=~/.vim/backup
 set directory=~/.vim/swap
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers=['eslint']
+let g:syntastic_javascript_eslint_generic = 1
+let g:syntastic_javascript_eslint_exec = '/bin/ls'
+let g:syntastic_javascript_eslint_exe='$(npm bin)/eslint'
+let g:syntastic_javascript_eslint_args='-f compact'
+
+
+" Terraform
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
