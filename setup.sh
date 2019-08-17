@@ -39,10 +39,6 @@ function install_enpass {
   sudo apt-get install enpass -y
 }
 
-function install_slack {
-  sudo snap install slack --classic
-}
-
 function install_nvm {
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 }
@@ -87,7 +83,6 @@ function install_fd {
 
 update_packages
 install_dev_tools
-install_slack
 install_spotify
 install_enpass
 install_nvm
