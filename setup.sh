@@ -25,11 +25,12 @@ function install_fzf {
   ~/.fzf/install --all
 }
 
+function install_pgcli {
+  sudo apt install pgcli -y
+}
+
 function install_spotify {
-  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0DF731E45CE24F27EEEB1450EFDC8610341D9410 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
-  echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
-  sudo apt-get update
-  sudo apt-get install spotify-client -y
+  snap install spotify
 }
 
 function install_enpass {
@@ -81,6 +82,44 @@ function install_fd {
   sudo dpkg -i /tmp/fd
 }
 
+function install_kubectl {
+  sudo apt-get update && sudo apt-get install -y apt-transport-https
+  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+  sudo apt update
+  sudo apt install -y kubectl
+}
+
+function install_keybase {
+  curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
+  sudo apt install -y ./keybase_amd64.deb
+}
+
+function configure_bash {
+  cat << EOF >> ~/.bashrc
+# make tab cycle through commands after listing
+bind '"\t":menu-complete'
+bind "set show-all-if-ambiguous on"
+bind "set completion-ignore-case on"
+bind "set menu-complete-display-prefix on"
+
+# use vi mode
+set -o vi
+
+# Setting fd as the default source for fzf
+export FZF_DEFAULT_COMMAND='fd --type f'
+
+# To apply the command to CTRL-T as well
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+EOF
+}
+
+function install_peek {
+  sudo add-apt-repository ppa:peek-developers/stable
+  sudo apt-get update
+  sudo apt-get install peek
+}
+
 update_packages
 install_dev_tools
 install_spotify
@@ -92,3 +131,8 @@ setup_vim
 configure_git
 install_docker
 install_fd
+install_kubectl
+install_keybase
+install_pgcli
+install_peek
+configure_bash
