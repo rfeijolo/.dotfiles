@@ -52,6 +52,9 @@ Plugin 'hashivim/vim-terraform'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'Quramy/tsuquyomi'
+Plugin 'junegunn/fzf.vim'
+Plugin 'vim-scripts/indentpython.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -107,6 +110,7 @@ let g:airline_theme='solarized'
 " Configure fzf
 set rtp+=~/.fzf
 nnoremap <c-p> :FZF<cr>
+nnoremap <c-o> :Buffers<cr>
 
 syntax enable
 set background=dark
@@ -194,3 +198,21 @@ augroup go
   au FileType go nmap <leader>rb :<C-u>call <SID>build_go_files()<CR>
 
 augroup END
+
+" configure typescript
+  " integrate with syntastic
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
+
+autocmd FileType typescript nmap <buffer> <Leader>r <Plug>(TsuquyomiRenameSymbol)
+autocmd FileType typescript nmap <buffer> <Leader>R <Plug>(TsuquyomiRenameSymbolC)
+
+" python
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
