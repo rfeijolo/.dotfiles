@@ -1,45 +1,5 @@
 #!/bin/bash
 
-function update_packages {
-  sudo apt update
-  sudo apt upgrade -y
-}
-
-function install_dev_tools {
-  sudo apt install vim-gnome -y
-  sudo apt install git -y
-  sudo apt install gnome-tweak-tool -y
-  sudo apt install tmux -y
-  sudo apt install curl -y
-  sudo apt install xclip -y
-  sudo apt install golang-go -y
-  sudo apt install openvpn easy-rsa -y
-  sudo apt install python python-pip -y
-  sudo apt install libpq-dev -y
-  sudo apt install apt-transport-https ca-certificates software-properties-common -y
-  pip install awscli --upgrade --user
-}
-
-function install_fzf {
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install --all
-}
-
-function install_pgcli {
-  sudo apt install pgcli -y
-}
-
-function install_spotify {
-  snap install spotify
-}
-
-function install_enpass {
-  wget -O - https://dl.sinew.in/keys/enpass-linux.key | sudo apt-key add -
-  echo "deb http://repo.sinew.in/ stable main" | sudo tee /etc/apt/sources.list.d/enpass.list
-  sudo apt-get update
-  sudo apt-get install enpass -y
-}
-
 function install_nvm {
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 }
@@ -48,6 +8,7 @@ function setup_tmux {
   echo 'Setting up tmux'
   ln -s $PWD/.tmux.conf $HOME
 }
+
 
 function setup_vim {
   echo 'Setting up vim'
@@ -63,24 +24,21 @@ function setup_vim {
 function configure_git {
   echo 'Configuring git'
   git config --global pull.rebase true
-  git config --global log.decorate=short
+  git config --global alias.hist "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
+  git config --global alias.lol "log --graph --decorate --pretty=oneline --abbrev-commit --all"
 }
 
 function install_docker {
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  sudo apt-get update
-  sudo apt-get install docker-ce -y
+#  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+#  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+#  sudo apt-get update
+#  sudo apt-get install docker-ce -y
   sudo gpasswd -a $USER docker
   newgrp docker
   sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
   sudo chmod +x /usr/local/bin/docker-compose
 }
 
-function install_fd {
-  curl -o /tmp/fd -L https://github.com/sharkdp/fd/releases/download/v7.0.0/fd_7.0.0_amd64.deb
-  sudo dpkg -i /tmp/fd
-}
 
 function install_kubectl {
   sudo apt-get update && sudo apt-get install -y apt-transport-https
@@ -88,11 +46,6 @@ function install_kubectl {
   echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
   sudo apt update
   sudo apt install -y kubectl
-}
-
-function install_keybase {
-  curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
-  sudo apt install -y ./keybase_amd64.deb
 }
 
 function configure_bash {
@@ -120,19 +73,6 @@ function install_peek {
   sudo apt-get install peek
 }
 
-update_packages
-install_dev_tools
-install_spotify
-install_enpass
-install_nvm
-install_fzf
-setup_tmux
 setup_vim
-configure_git
-install_docker
-install_fd
-install_kubectl
-install_keybase
-install_pgcli
-install_peek
-configure_bash
+ln -ls /etc/X11/xorg.conf.d/00-keyboard.conf ~/.dotfiles/00-keyboard.conf
+ln -ls ~/.config/i3/config ~/.dotfiles/i3.config

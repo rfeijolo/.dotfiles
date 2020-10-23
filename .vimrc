@@ -8,7 +8,7 @@ set ignorecase
 set smartcase
 
 set backspace=indent,eol,start
-set clipboard=unnamed
+set clipboard=unnamedplus
 set number
 set ruler
 set shiftwidth=2
@@ -208,11 +208,4 @@ autocmd FileType typescript nmap <buffer> <Leader>r <Plug>(TsuquyomiRenameSymbol
 autocmd FileType typescript nmap <buffer> <Leader>R <Plug>(TsuquyomiRenameSymbolC)
 
 " python
-au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
+au BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix cc=80
