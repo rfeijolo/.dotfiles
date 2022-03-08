@@ -16,7 +16,7 @@ set tabstop=2
 set list
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 set nocompatible              " be iMproved, required
-set cc=100
+set cc=80
 set fileencoding=utf-8
 set fileencodings=utf-8
 set ttyfast
@@ -46,15 +46,14 @@ Plugin 'tpope/vim-sexp-mappings-for-regular-people'
 Plugin 'tpope/vim-surround'
 Plugin 'dhruvasagar/vim-zoom'
 Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'leafgarland/typescript-vim'
 Plugin 'hashivim/vim-terraform'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'Quramy/tsuquyomi'
 Plugin 'junegunn/fzf.vim'
 Plugin 'vim-scripts/indentpython.vim'
+Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+Plugin 'vim-test/vim-test'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -118,21 +117,6 @@ colorscheme solarized
 
 set backupdir=~/.vim/backup
 set directory=~/.vim/swap
-" Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let gesyntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers=['eslint']
-let g:syntastic_javascript_eslint_generic = 1
-let g:syntastic_javascript_eslint_exec = '/bin/ls'
-let g:syntastic_javascript_eslint_exe='$(npm bin)/eslint --rulesdir scripts/eslint-rules'
-let g:syntastic_javascript_eslint_args='-f compact'
-
 
 " Terraform
 let g:terraform_align=1
@@ -199,13 +183,92 @@ augroup go
 
 augroup END
 
-" configure typescript
-  " integrate with syntastic
-let g:tsuquyomi_disable_quickfix = 1
-let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
+" COC
+" TextEdit might fail if hidden is not set.
+set hidden
 
-autocmd FileType typescript nmap <buffer> <Leader>r <Plug>(TsuquyomiRenameSymbol)
-autocmd FileType typescript nmap <buffer> <Leader>R <Plug>(TsuquyomiRenameSymbolC)
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+set updatetime=300
+set shortmess+=c
+let g:coc_global_extensions = [
+    \'coc-json',
+    \'coc-tsserver',
+    \'coc-eslint',
+    \'coc-snippets',
+    \'coc-python',
+    \'coc-css',
+    \'coc-html',
+    \'coc-fzf-preview',
+    \'coc-highlight',
+    \'coc-markdownlint',
+    \'coc-sh',
+    \'coc-jest']
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+" B
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
 
 " python
 au BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix cc=80

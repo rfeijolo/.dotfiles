@@ -1,7 +1,45 @@
 #!/bin/bash
 
+yay -S moreutils
+yay -S yay-bin
+yay -S firefox
+yay -S gvim
+yay -S tree
+xcape -e 'Caps_Lock=Escape'
+yay -S --needed base-devel
+yay -S xclip
+yay -S xorg-xclipboard
+yay -S pulseaudio
+yay -S pulseaudio-jack
+yay -S pulseaudio-bluetooth
+yay -S pamixer
+yay -S pavucontrol
+yay -S xfce4-terminal
+yay -S wavpack
+yay -S openvpn
+yay -S flameshot
+yay -S jq
+yay -S fd
+yay -S keybase-bin
+yay -S i3-swallow
+
+
+yay -S openssh
+yay -S physlock
+yay -S kubectx
+yay -S kubectl
+yay -S zip
+yay -S gnome-keyring
+yay -S python2
+yay -S xss-lock
+npm config set python /usr/bin/python2
+
 function install_nvm {
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+}
+
+function install_dependencies {
+ echo 'Installing dependencies' 
 }
 
 function setup_tmux {
@@ -28,51 +66,28 @@ function configure_git {
   git config --global alias.lol "log --graph --decorate --pretty=oneline --abbrev-commit --all"
 }
 
-function install_docker {
-#  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-#  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-#  sudo apt-get update
-#  sudo apt-get install docker-ce -y
-  sudo gpasswd -a $USER docker
-  newgrp docker
-  sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-  sudo chmod +x /usr/local/bin/docker-compose
-}
 
+#function configure_bash {
+#  cat << EOF >> ~/.bashrc
+## make tab cycle through commands after listing
+#bind '"\t":menu-complete'
+#bind "set show-all-if-ambiguous on"
+#bind "set completion-ignore-case on"
+#bind "set menu-complete-display-prefix on"
+#
+## use vi mode
+#set -o vi
+#
+## Setting fd as the default source for fzf
+#export FZF_DEFAULT_COMMAND='fd --type f'
+#
+## To apply the command to CTRL-T as well
+#export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+#EOF
+#}
 
-function install_kubectl {
-  sudo apt-get update && sudo apt-get install -y apt-transport-https
-  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-  echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-  sudo apt update
-  sudo apt install -y kubectl
-}
-
-function configure_bash {
-  cat << EOF >> ~/.bashrc
-# make tab cycle through commands after listing
-bind '"\t":menu-complete'
-bind "set show-all-if-ambiguous on"
-bind "set completion-ignore-case on"
-bind "set menu-complete-display-prefix on"
-
-# use vi mode
-set -o vi
-
-# Setting fd as the default source for fzf
-export FZF_DEFAULT_COMMAND='fd --type f'
-
-# To apply the command to CTRL-T as well
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-EOF
-}
-
-function install_peek {
-  sudo add-apt-repository ppa:peek-developers/stable
-  sudo apt-get update
-  sudo apt-get install peek
-}
-
+setup_tmux
 setup_vim
-ln -ls /etc/X11/xorg.conf.d/00-keyboard.conf ~/.dotfiles/00-keyboard.conf
-ln -ls ~/.config/i3/config ~/.dotfiles/i3.config
+configure_git
+# ln -s ~/.dotfiles/00-keyboard.conf /etc/X11/xorg.conf.d/00-keyboard.conf
+# ln -s ~/.dotfiles/i3.config ~/.config/i3/config 
