@@ -1,8 +1,8 @@
 function brew_install {
   echo 'Installing brew + tools'
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   cat $PWD/.brew | xargs -I {} brew install {}
-  cat $PWD/.brew-cask | xargs -I {} brew cask install {}
+  cat $PWD/.brew-cask | xargs -I {} brew install --cask  {}
 }
 
 function configure_zsh {
@@ -48,10 +48,10 @@ function configure_osx {
   defaults write -g ApplePressAndHoldEnabled -bool false
 }
 
-configure_git
-brew_install
-configure_zsh
-set_zsh_as_default_shell
-setup_tmux
-setup_vim
+#configure_git
+#brew_install
+#configure_zsh
+#set_zsh_as_default_shell
+#setup_tmux
+#setup_vim
 configure_osx

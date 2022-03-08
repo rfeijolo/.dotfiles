@@ -11,3 +11,8 @@ export EDITOR=vim
 export VISUAL=vim
 alias git='noglob git'
 alias curl='noglob curl'
+eval $(/opt/homebrew/bin/brew shellenv)
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+. /opt/homebrew/etc/profile.d/z.sh
+export GPG_TTY=$(tty)

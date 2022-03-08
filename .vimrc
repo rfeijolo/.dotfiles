@@ -34,10 +34,6 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'tpope/vim-fireplace'
-Plugin 'tpope/vim-salve'
-Plugin 'guns/vim-sexp'
-Plugin 'tpope/vim-sexp-mappings-for-regular-people'
 Plugin 'tpope/vim-surround'
 
 call vundle#end()            " required
